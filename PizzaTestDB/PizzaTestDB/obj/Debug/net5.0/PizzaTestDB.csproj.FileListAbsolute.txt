@@ -90,3 +90,5 @@ D:\PROGRAMMING\CourseWork\PizzaTestDB\PizzaTestDB\obj\Debug\net5.0\PizzaTestDB.d
 D:\PROGRAMMING\CourseWork\PizzaTestDB\PizzaTestDB\obj\Debug\net5.0\ref\PizzaTestDB.dll
 D:\PROGRAMMING\CourseWork\PizzaTestDB\PizzaTestDB\obj\Debug\net5.0\PizzaTestDB.pdb
 D:\PROGRAMMING\CourseWork\PizzaTestDB\PizzaTestDB\obj\Debug\net5.0\PizzaTestDB.genruntimeconfig.cache
+D:\PROGRAMMING\CourseWork\PizzaTestDB\PizzaTestDB\bin\Debug\net5.0\Castle.Core.dll
+D:\PROGRAMMING\CourseWork\PizzaTestDB\PizzaTestDB\bin\Debug\net5.0\Microsoft.EntityFrameworkCore.Proxies.dll
