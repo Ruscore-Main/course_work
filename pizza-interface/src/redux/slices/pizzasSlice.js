@@ -9,7 +9,6 @@ const initialState = {
 // Получение товаров
 export const fetchPizzas = createAsyncThunk('pizzas/fetchPizzas', async (params) => {
     const {sortBy, category} = params;
-    console.log('params ================ ', params);
     let pizzas = [];
     if (category === null && sortBy === "popular") {
         pizzas = await pizzasAPI.getAllPizzas();

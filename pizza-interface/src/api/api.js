@@ -1,31 +1,46 @@
 import axios from "axios";
 
-const BASE_URL = "https://localhost:44324/api/pizza";
+const BASE_URL = "https://localhost:44324/api";
 
-export const instance = axios.create({
-  baseURL: BASE_URL,
+export const pizzaInstance = axios.create({
+  baseURL: BASE_URL+'/pizza',
 });
+
+export const userInstance = axios.create({
+  baseURL: BASE_URL+'/user',
+});
+
 
 export const pizzasAPI = {
   // Возвращает массив всех пицц
   getAllPizzas() {
-    return instance.get().then((resp) => resp.data);
+    return pizzaInstance.get().then((resp) => resp.data);
   },
   // Возвращает массив пицц по параметрам
   getPizzasByParams(sortBy, category) {
-    return instance.get(`?${category !== null ? `category=${category}&` : ''}_sort=${sortBy}&_order=asc`).then((resp) => resp.data);
+    return pizzaInstance.get(`?${category !== null ? `category=${category}&` : ''}_sort=${sortBy}&_order=asc`).then((resp) => resp.data);
   },
 
   addNewPizza(pizza) {
-    return instance.post('', pizza)
+    return pizzaInstance.post('', pizza)
   },
 
   deletePizza(id) {
-    return instance.delete(`/${id}`)
+    return pizzaInstance.delete(`/${id}`)
   },
 
   updatePizza(pizza) {
-    return instance.put(`/${pizza.id}`, pizza)
+    return pizzaInstance.put(`/${pizza.id}`, pizza)
   }
 
 };
+
+export const userAPI = {
+  registerUser(login, password) {
+    return userInstance.post('/registration', {login, password}).then(resp => resp.data);
+  },
+
+  authorizateUser(login, password) {
+    return userInstance.post('/authorization', {login, password}).then(resp => resp.data);
+  }
+}

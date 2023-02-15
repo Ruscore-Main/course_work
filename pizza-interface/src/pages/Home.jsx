@@ -7,6 +7,8 @@ import LoaderPizzaBlock from '../components/LoaderPizzaBlock';
 import { fetchPizzas } from '../redux/slices/pizzasSlice';
 import { setCategory } from '../redux/slices/filterSlice';
 import { addPizzaToCart } from '../redux/slices/cartSlice';
+import { useAuth } from '../hooks/use-auth';
+import { useNavigate } from 'react-router-dom';
 
 const categoryNames = ['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 const sortTypes = [
@@ -16,6 +18,13 @@ const sortTypes = [
 ];
 
 const Home = () => {
+  // Если пользователь неавторизован
+  const {isAuth, login, cart} = useAuth();
+  const navigate = useNavigate();
+  if (!isAuth) {
+    navigate('/login')
+  }
+
   const dispatch = useDispatch();
   const pizzas = useSelector(({ pizzas }) => pizzas.items);
   const isLoaded = useSelector(({ pizzas }) => pizzas.isLoaded);

@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using PizzaTestDB.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,8 +42,8 @@ namespace PizzaTestDB.Controllers
             List<PizzaJson> pizzas = new List<PizzaJson>();
             List<PizzaImage> images = await _db.PizzaImages.ToListAsync();
             List<Models.Type> allTypes = await _db.Types.ToListAsync();
-            List<Pizza_Type> pts = await _db.Pizza_Types.ToListAsync();
-            await _db.Pizzas.ForEachAsync(pizza =>
+            List<Pizza> pizzasDB = await _db.Pizzas.ToListAsync();
+            pizzasDB.ForEach(pizza =>
             {
                 PizzaJson curPizza = new PizzaJson();
                 curPizza.id = pizza.Id;
@@ -53,21 +51,14 @@ namespace PizzaTestDB.Controllers
                 curPizza.price = pizza.Price;
                 curPizza.category = pizza.Category;
                 curPizza.rating = pizza.Rating;
-
-                foreach (Pizza_Type pt in pts)
+                foreach (Pizza_Type pt in pizza.Pizza_Types)
                 {
-                    if (pt.PizzaId == pizza.Id)
-                    {
-                        curPizza.types.Add(pt.Type.TypeValue);
-                    }
+                    curPizza.types.Add(pt.Type.TypeValue);
                 }
-                foreach (PizzaImage img in images)
+                foreach (PizzaImage img in pizza.Images)
                 {
-                    if (img.PizzaId == pizza.Id)
-                    {
-                        curPizza.imageUrls.Add(img.ImageUrl);
-                        curPizza.sizes.Add(img.Size);
-                    }
+                    curPizza.imageUrls.Add(img.ImageUrl);
+                    curPizza.sizes.Add(img.Size);
                 }
                 pizzas.Add(curPizza);
             });
@@ -125,13 +116,12 @@ namespace PizzaTestDB.Controllers
 
             List<Models.Type> allTypes = await _db.Types.ToListAsync();
 
-            Pizza newPizza = new Pizza();
-            newPizza.Name = pizza.name;
-            newPizza.Price = pizza.price;
-            newPizza.Rating = pizza.rating;
-            newPizza.Category = pizza.category;
-
-
+            Pizza newPizza = new Pizza() {
+                Name = pizza.name,
+                Price = pizza.price,
+                Rating = pizza.rating,
+                Category = pizza.category
+            };
 
             for (int i = 0; i < pizza.imageUrls.Count; i++)
             {

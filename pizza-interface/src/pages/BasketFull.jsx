@@ -102,8 +102,6 @@ function BasketFull (props) {
             s30tk = pizzas.filter(el => el.size === 30 && el.type === 'тонкое' ),
             s40tk = pizzas.filter(el => el.size === 40 && el.type === 'тонкое' );
 
-            console.log(s26tr, s30tr, s40tr, s26tk, s30tk, s40tk)
-
             return [
             s26tr.length ? <BasketItem pizza={s26tr[0]} name={name} imageUrl={s26tr[0].imageUrl} price={s26tr.reduce((sum, el)=>sum+el.price, 0)} count={s26tr.length} size={26} type='традиционное'/> : '',
             s30tr.length ? <BasketItem pizza={s30tr[0]} name={name} imageUrl={s30tr[0].imageUrl} price={s30tr.reduce((sum, el)=>sum+el.price, 0)} count={s30tr.length} size={30} type='традиционное'/> : '',

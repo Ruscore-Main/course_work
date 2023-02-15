@@ -1,0 +1,34 @@
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import classNames from 'classnames';
+import { authUser } from '../redux/slices/userSlice';
+
+const Authorization = () => {
+
+  const dispatch = useDispatch();
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const onClickLogin = () => {
+    dispatch(authUser({login, password})).then(res => {
+      console.log(res);
+      navigate('/');
+    })
+    
+  }
+
+  return (
+    <>
+      <div className="auth__body">
+      <input placeholder="Логин" type="text" className="auth__input" value={login} onChange={(e)=>setLogin(e.target.value)}/>
+        <input placeholder="Пароль" type="password" className="auth__input" value={password} onChange={(e)=>setPassword(e.target.value)}/>
+      </div>
+
+      <button className={classNames('button button--auth', { disabled: login.length === 0 || password.length === 0 })} onClick={onClickLogin}>Войти</button>
+    </>
+  );
+};
+
+export default Authorization;
