@@ -14,7 +14,7 @@ const filterSlice = createSlice({
     },
 
     setCategory(state, action) {
-      state.setCategory = action.payload;
+      state.category = action.payload;
     },
   },
 });

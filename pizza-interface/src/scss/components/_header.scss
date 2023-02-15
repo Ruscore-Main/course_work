@@ -4,7 +4,19 @@
   border-bottom: 1px solid $gray-line;
   padding: 40px 0;
 
-  
+  .logout {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+
+  .header__cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   .container {
     display: flex;

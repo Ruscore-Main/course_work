@@ -53,14 +53,14 @@ namespace PizzaTestDB.Controllers
         // Регистрация пользователя
         [Route("registration")]
         [HttpPost]
-        public async Task<ActionResult<Pizza>> Registration(UserRequest ur)
+        public async Task<ActionResult<User>> Registration(UserRequest ur)
         {
             string login = ur.login;
             string password = ur.password;
             List<User> users = await _db.Users.ToListAsync();
             if (users.Any(el => el.Login == login))
             {
-                return BadRequest();
+                return BadRequest("Такой пользователь уже существует!");
             }
 
             User newUser = new User()
@@ -89,7 +89,7 @@ namespace PizzaTestDB.Controllers
         // Авторизация пользователя
         [Route("authorization")]
         [HttpPost]
-        public async Task<ActionResult<Pizza>> Authorization(UserRequest ur)
+        public async Task<ActionResult> Authorization(UserRequest ur)
         {
             string login = ur.login;
             string password = ur.password;
@@ -97,7 +97,7 @@ namespace PizzaTestDB.Controllers
             User currentUser = users.FirstOrDefault(el => el.Login == login && el.Password == password);
             if (currentUser == null)
             {
-                return NotFound();
+                return NotFound("Пользователь не найден!");
             }
 
             UserJson user = new UserJson()
@@ -137,7 +137,7 @@ namespace PizzaTestDB.Controllers
         // Добавление товара в корзину
         [Route("cart")]
         [HttpPost]
-        public async Task<ActionResult<Pizza>> AddItemToCart(CartItemJson item)
+        public async Task<ActionResult<User>> AddItemToCart(CartItemJson item)
         {
             User currentUser = await _db.Users.FirstOrDefaultAsync(el => el.Id == item.userId);
 
@@ -176,7 +176,7 @@ namespace PizzaTestDB.Controllers
         // Удаление товара из корзины
         [Route("cart")]
         [HttpDelete]
-        public async Task<ActionResult<Pizza>> RemoveItemFromCart(CartItemJson item)
+        public async Task<ActionResult> RemoveItemFromCart(CartItemJson item)
         {
             User currentUser = await _db.Users.FirstOrDefaultAsync(el => el.Id == item.userId);
 

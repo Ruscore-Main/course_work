@@ -8,7 +8,7 @@ import { fetchPizzas } from '../redux/slices/pizzasSlice';
 import { setCategory } from '../redux/slices/filterSlice';
 import { addPizzaToCart } from '../redux/slices/cartSlice';
 import { useAuth } from '../hooks/use-auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const categoryNames = ['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 const sortTypes = [
@@ -19,7 +19,7 @@ const sortTypes = [
 
 const Home = () => {
   // Если пользователь неавторизован
-  const {isAuth, login, cart} = useAuth();
+  const {isAuth, role} = useAuth();
   const navigate = useNavigate();
   if (!isAuth) {
     navigate('/login')
@@ -47,6 +47,7 @@ const Home = () => {
   const onSelectCategory = React.useCallback((index) => dispatch(setCategory(index)));
 
   return (
+    <>
     <div className="container">
       <div className="content__top">
         <Categories
@@ -63,6 +64,8 @@ const Home = () => {
           : Array.from(Array(10), (_, index) => <LoaderPizzaBlock key={index} />)}
       </div>
     </div>
+    {role === 'Admin' && <div className="adminLink"><Link to={'/admin'}>Admin</Link></div>}
+    </>
   );
 };
 

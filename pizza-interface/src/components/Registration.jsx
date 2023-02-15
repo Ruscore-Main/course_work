@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { regUser } from '../redux/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/use-auth';
 
 const isValidRegistration = (login, pas, pasr) => {
   if (login.length === 0 && pas.length === 0) return '';
@@ -15,17 +14,25 @@ const isValidRegistration = (login, pas, pasr) => {
 
 const Registration = () => {
   const dispatch = useDispatch();
+
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [passwordR, setPasswordR] = useState('');
+  let [textError, setTextError] = useState('');
+
   let isValid = isValidRegistration(login, password, passwordR);
+
   const navigate = useNavigate();
 
   const onClickRegister = () => {
-    dispatch(regUser({ login, password })).then((res) => {
-      console.log(res);
-      navigate('/');
-    });
+    dispatch(regUser({ login, password })).then(res => {
+      if (res.payload?.login !== undefined) {
+        navigate('/');
+      }
+      else {
+        setTextError(res.payload);
+      }
+    })
   };
 
   return (
@@ -59,7 +66,7 @@ const Registration = () => {
         onClick={onClickRegister}>
         Зарегистрироваться
       </button>
-      <p className="not-valid">{isValid !== "Успешно!" ? isValid : ''}</p>
+      <p className="not-valid">{textError} {isValid !== "Успешно!" ? isValid : ''}</p>
     </>
   );
 };

@@ -1,20 +1,27 @@
-import { AddNewPizza, TablePizza } from './../components';
 import React from 'react';
+import { AddNewPizza, TablePizza } from './../components';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPizzas } from '../redux/slices/pizzasSlice';
+import { useAuth } from '../hooks/use-auth';
+import { Navigate } from 'react-router-dom';
 
 const Admin = () => {
 
+  const {isAuth, role} = useAuth();
   const {items, isLoaded} = useSelector(({ pizzas }) => ({
     items: pizzas.items,
     isLoaded: pizzas.isLoaded
   }));
-
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    dispatch(fetchPizzas('popular', null));
-  }, []);
+  if (!isAuth) {
+    return <Navigate to='/login' />
+  }
+
+  if (role !== "Admin") {
+    return <Navigate to='/' />
+  }
+
+  
 
 
 

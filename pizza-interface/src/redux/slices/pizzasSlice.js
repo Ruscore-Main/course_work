@@ -21,24 +21,23 @@ export const fetchPizzas = createAsyncThunk('pizzas/fetchPizzas', async (params)
 
 // Добавление нового товара
 export const addNewPizza = createAsyncThunk('pizzas/addNewPizza', async (params) => {
-    const {payload} = params;
-    await pizzasAPI.addNewPizza(payload);
+    debugger;
+    await pizzasAPI.addNewPizza(params);
     const pizzas = await pizzasAPI.getAllPizzas();
     return pizzas;
 });
 
 // Удаление товара
 export const deletePizza = createAsyncThunk('pizzas/deletePizza', async (params) => {
-    const {payload} = params;
-    await pizzasAPI.deletePizza(payload);
+    debugger;
+    await pizzasAPI.deletePizza(params);
     const pizzas = await pizzasAPI.getAllPizzas();
     return pizzas;
 });
 
 // Обновление товара
 export const updatePizza = createAsyncThunk('pizzas/updatePizza', async (params) => {
-    const {payload} = params;
-    await pizzasAPI.updatePizza(payload);
+    await pizzasAPI.updatePizza(params);
     const pizzas = await pizzasAPI.getAllPizzas();
     return pizzas;
 });

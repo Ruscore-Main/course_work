@@ -10,11 +10,17 @@ const Authorization = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  let [textError, setTextError] = useState('');
 
   const onClickLogin = () => {
     dispatch(authUser({login, password})).then(res => {
-      console.log(res);
-      navigate('/');
+      console.log(res)
+      if (res.payload?.login !== undefined) {
+        navigate('/');
+      }
+      else {
+        setTextError(res.payload);
+      }
     })
     
   }
@@ -27,6 +33,7 @@ const Authorization = () => {
       </div>
 
       <button className={classNames('button button--auth', { disabled: login.length === 0 || password.length === 0 })} onClick={onClickLogin}>Войти</button>
+      <p className='not-valid'>{textError}</p>
     </>
   );
 };

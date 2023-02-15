@@ -37,10 +37,10 @@ export const pizzasAPI = {
 
 export const userAPI = {
   registerUser(login, password) {
-    return userInstance.post('/registration', {login, password}).then(resp => resp.data);
+    return userInstance.post('/registration', {login, password});
   },
 
   authorizateUser(login, password) {
-    return userInstance.post('/authorization', {login, password}).then(resp => resp.data);
+    return userInstance.post('/authorization', {login, password});
   }
 }
