@@ -6,9 +6,9 @@ import { PizzaCard, Categories, SortPopup } from './../components';
 import LoaderPizzaBlock from '../components/LoaderPizzaBlock';
 import { fetchPizzas } from '../redux/slices/pizzasSlice';
 import { setCategory } from '../redux/slices/filterSlice';
-import { addPizzaToCart } from '../redux/slices/cartSlice';
 import { useAuth } from '../hooks/use-auth';
 import { Link, useNavigate } from 'react-router-dom';
+import { addPizzaToCart } from '../redux/slices/userSlice';
 
 const categoryNames = ['Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'];
 const sortTypes = [

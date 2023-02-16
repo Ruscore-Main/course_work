@@ -31,6 +31,7 @@ namespace PizzaTestDB.Controllers
         public string name;
         public int price;
         public int category;
+        public string type;
         public int size;
         public string imageUrl;
         public int count;
@@ -118,6 +119,7 @@ namespace PizzaTestDB.Controllers
                     name = cartItem.Name,
                     price = cartItem.Price,
                     category = cartItem.Category,
+                    type = cartItem.Type,
                     size = cartItem.Size,
                     imageUrl = cartItem.ImageUrl,
                     count = cartItem.Count,
@@ -146,13 +148,27 @@ namespace PizzaTestDB.Controllers
                 return NotFound();
             }
 
-            CartItem currentItem = currentUser.CartItems.FirstOrDefault(el => el.Id == item.id);
+            
+
+            CartItem currentItem = currentUser.CartItems.FirstOrDefault(el => el.Name == item.name && el.Size == item.size && el.Type == item.type);
 
             if (currentItem != null)
             {
                 currentItem.Count += 1;
+                CartItemJson currentItemJson = new CartItemJson()
+                {
+                    id = currentItem.Id,
+                    name = currentItem.Name,
+                    price = currentItem.Price,
+                    category = currentItem.Category,
+                    type = currentItem.Type,
+                    size = currentItem.Size,
+                    imageUrl = currentItem.ImageUrl,
+                    count = currentItem.Count,
+                    userId = currentItem.UserId,
+                };
                 await _db.SaveChangesAsync();
-                return Ok(currentItem);
+                return Ok(currentItemJson);
             }
 
             CartItem newItem = new CartItem()
@@ -160,22 +176,57 @@ namespace PizzaTestDB.Controllers
                 Name = item.name,
                 Price = item.price,
                 Category = item.category,
+                Type = item.type,
                 Size = item.size,
                 ImageUrl = item.imageUrl,
                 Count = 1
             };
 
+
             currentUser.CartItems.Add(newItem);
 
             await _db.SaveChangesAsync();
-            return new JsonResult(newItem);
+
+            CartItemJson newItemJson = new CartItemJson()
+            {
+                id = newItem.Id,
+                name = newItem.Name,
+                price = newItem.Price,
+                category = newItem.Category,
+                type = newItem.Type,
+                size = newItem.Size,
+                imageUrl = newItem.ImageUrl,
+                count = newItem.Count,
+                userId = newItem.UserId,
+            };
+
+            return new JsonResult(newItemJson);
 
         }
 
         // DELETE /cart
+        // Очистка корзины
+        [Route("clearCart")]
+        [HttpPost]
+        public async Task<ActionResult> ClearCart(User user)
+        {
+            User currentUser = await _db.Users.FirstOrDefaultAsync(el => el.Id == user.Id);
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            currentUser.CartItems.Clear();
+            await _db.SaveChangesAsync();
+
+            return Ok(currentUser);
+        }
+
+        // DELETE /cart
         // Удаление товара из корзины
-        [Route("cart")]
-        [HttpDelete]
+        [Route("removeItems")]
+        [HttpPost]
         public async Task<ActionResult> RemoveItemFromCart(CartItemJson item)
         {
             User currentUser = await _db.Users.FirstOrDefaultAsync(el => el.Id == item.userId);
@@ -185,7 +236,7 @@ namespace PizzaTestDB.Controllers
                 return NotFound();
             }
 
-            currentUser.CartItems.Remove(currentUser.CartItems.FirstOrDefault(el => el.Id == item.id));
+            currentUser.CartItems.Remove(currentUser.CartItems.FirstOrDefault(el => el.Name == item.name && el.Type == item.type && el.Size == item.size));
             await _db.SaveChangesAsync();
 
             return Ok(item);

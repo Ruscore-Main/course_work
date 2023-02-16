@@ -21,7 +21,6 @@ export const fetchPizzas = createAsyncThunk('pizzas/fetchPizzas', async (params)
 
 // Добавление нового товара
 export const addNewPizza = createAsyncThunk('pizzas/addNewPizza', async (params) => {
-    debugger;
     await pizzasAPI.addNewPizza(params);
     const pizzas = await pizzasAPI.getAllPizzas();
     return pizzas;
@@ -29,7 +28,6 @@ export const addNewPizza = createAsyncThunk('pizzas/addNewPizza', async (params)
 
 // Удаление товара
 export const deletePizza = createAsyncThunk('pizzas/deletePizza', async (params) => {
-    debugger;
     await pizzasAPI.deletePizza(params);
     const pizzas = await pizzasAPI.getAllPizzas();
     return pizzas;

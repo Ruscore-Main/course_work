@@ -3,16 +3,19 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import BasketItem from '../components/BasketItem';
 import { useSelector } from 'react-redux';
-import { clearCart } from '../redux/slices/cartSlice';
+import { clearCart } from '../redux/slices/userSlice';
 
+function BasketFull() {
+  const { cart } = useSelector((state) => state.user);
+  const [totalPrice, totalCount] = [
+    cart.reduce((sum, el) => sum + el.count * el.price, 0),
+    cart.reduce((sum, el) => sum + el.count, 0),
+  ];
 
-function BasketFull (props) {
-
-  const {items, totalPrice, totalCount} = useSelector(state => state.cart);
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const clearBasket = () => {
     dispatch(clearCart())
-  }
+  };
 
   return (
     <div className="container container--cart">
@@ -90,32 +93,9 @@ function BasketFull (props) {
           </div>
         </div>
         <div className="content__items">
-          {
-            Object.values(items).map( pizzas =>  {
-            
-            const name = pizzas[0].name;
-
-            let s26tr = pizzas.filter(el => el.size === 26 && el.type === 'традиционное'),
-            s30tr = pizzas.filter(el => el.size === 30 && el.type === 'традиционное' ),
-            s40tr = pizzas.filter(el => el.size === 40 && el.type === 'традиционное' ),
-            s26tk = pizzas.filter(el => el.size === 26 && el.type === 'тонкое' ),
-            s30tk = pizzas.filter(el => el.size === 30 && el.type === 'тонкое' ),
-            s40tk = pizzas.filter(el => el.size === 40 && el.type === 'тонкое' );
-
-            return [
-            s26tr.length ? <BasketItem pizza={s26tr[0]} name={name} imageUrl={s26tr[0].imageUrl} price={s26tr.reduce((sum, el)=>sum+el.price, 0)} count={s26tr.length} size={26} type='традиционное'/> : '',
-            s30tr.length ? <BasketItem pizza={s30tr[0]} name={name} imageUrl={s30tr[0].imageUrl} price={s30tr.reduce((sum, el)=>sum+el.price, 0)} count={s30tr.length} size={30} type='традиционное'/> : '',
-            s40tr.length ? <BasketItem pizza={s40tr[0]} name={name} imageUrl={s40tr[0].imageUrl} price={s40tr.reduce((sum, el)=>sum+el.price, 0)} count={s40tr.length} size={40} type='традиционное'/> : '',
-            
-            s26tk.length ? <BasketItem pizza={s26tk[0]} name={name} imageUrl={s26tk[0].imageUrl} price={s26tk.reduce((sum, el)=>sum+el.price, 0)} count={s26tk.length} size={26} type='тонкое'/> : '',
-            s30tk.length ? <BasketItem pizza={s30tk[0]} name={name} imageUrl={s30tk[0].imageUrl} price={s30tk.reduce((sum, el)=>sum+el.price, 0)} count={s30tk.length} size={30} type='тонкое'/> : '',
-            s40tk.length ? <BasketItem pizza={s40tk[0]} name={name} imageUrl={s40tk[0].imageUrl} price={s40tk.reduce((sum, el)=>sum+el.price, 0)} count={s40tk.length} size={40} type='тонкое'/> : ''
-          ]
-
-          })
-          }
-          
-          
+          {cart.map((pizza) => (
+            <BasketItem {...pizza} pizza={pizza} />
+          ))}
         </div>
         <div className="cart__bottom">
           <div className="cart__bottom-details">
@@ -146,7 +126,7 @@ function BasketFull (props) {
               </svg>
 
               <span>Вернуться назад</span>
-            </ Link>
+            </Link>
             <div className="button pay-btn">
               <span>Оплатить сейчас</span>
             </div>

@@ -42,5 +42,17 @@ export const userAPI = {
 
   authorizateUser(login, password) {
     return userInstance.post('/authorization', {login, password});
+  },
+
+  addToCart(item) {
+    return userInstance.post('/cart', item).then(res => res.data);
+  },
+
+  clearCart(user) {
+    return userInstance.post('/clearCart', user).then(res => res.data);
+  },
+
+  clearPizzas(item) {
+    return userInstance.post('/removeItems', item).then(res => res.data);
   }
 }

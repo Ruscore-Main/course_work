@@ -11,7 +11,13 @@ import { useAuth } from '../hooks/use-auth';
 const Header = () => {
   const dispatch = useDispatch();
   const { isAuth } = useAuth();
-  const { totalPrice, totalCount } = useSelector(({ cart }) => cart);
+  const { cart } = useSelector((state) => state.user);
+
+  const [totalPrice, totalCount] = [
+    cart.reduce((sum, el) => sum + el.count * el.price, 0),
+    cart.reduce((sum, el) => sum + el.count, 0),
+  ];
+
   return (
     <div className="header">
       <div className="container">
@@ -25,7 +31,14 @@ const Header = () => {
           </div>
         </Link>
         <div className="header__cart">
-          {isAuth && <img src={logout} className="logout" onClick={() => dispatch(removeUser())} />}
+          {isAuth && (
+            <img
+              src={logout}
+              alt="Item img"
+              className="logout"
+              onClick={() => dispatch(removeUser())}
+            />
+          )}
           {isAuth && (
             <Link to="/basket">
               <Button className="button--cart">

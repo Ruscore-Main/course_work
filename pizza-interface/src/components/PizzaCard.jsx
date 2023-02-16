@@ -7,14 +7,18 @@ import Button from './Button';
 import { useSelector } from 'react-redux';
 import ImageLoader from './../assets/img/pizzaLogo.svg';
 
-const PizzaCard = ({ id, imageUrls, name, price, sizes, types, onClickAddPizza, isPreview }) => {
+const PizzaCard = ({ id, imageUrls, name, price, category, sizes, types, onClickAddPizza, isPreview }) => {
   const availableTypes = ['тонкое', 'традиционное'];
   const availableSizes = [26, 30, 40];
   const [activeType, setActiveType] = React.useState(types[0]);
   const [activeSize, setActiveSize] = React.useState(sizes[0]);
   const [imageLoaded, setImageLoaded] = React.useState(false);
-
-  const items = useSelector(({ cart }) => cart.items);
+  const {cart} = useSelector((state) => state.user);
+  let count = 0;
+  if (cart.length != 0) {
+    const curPizza = cart.filter(el => el.name === name);
+    count = curPizza.length == 0 ? 0 : curPizza.reduce((sum, el)=>sum + el.count, 0);
+  }
   const onSelectType = (index) => setActiveType(index);
   const onSelectSize = (index) => {
     setImageLoaded(false);
@@ -22,11 +26,11 @@ const PizzaCard = ({ id, imageUrls, name, price, sizes, types, onClickAddPizza, 
   };
   const onAddPizza = () => {
     onClickAddPizza({
-      id,
       currentImageUrl,
       size: activeSize,
       type: availableTypes[activeType],
       price,
+      category,
       name,
       imageUrl: imageUrls[sizes.findIndex((el) => activeSize == el)]
     });
@@ -90,7 +94,7 @@ const PizzaCard = ({ id, imageUrls, name, price, sizes, types, onClickAddPizza, 
             />
           </svg>
           <span>Добавить</span>
-          {items[id] ? <i>{items[id].length}</i> : ''}
+          {count ? <i>{count}</i> : ''}
         </Button>
       </div>
     </div>
