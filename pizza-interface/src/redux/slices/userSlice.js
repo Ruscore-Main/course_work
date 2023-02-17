@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { userAPI } from '../../api/api';
+import sortBy from 'lodash.sortby';
 
 const initialState = {
   id: null,
@@ -30,6 +31,7 @@ export const authUser = createAsyncThunk('user/authUser', async (params) => {
 });
 
 // cart thunks
+// Добавление товара в корзину
 export const addPizzaToCart = createAsyncThunk('user/addPizzaToCart', async (params, thunkAPI) => {
   const { name, price, category, type, size, imageUrl } = params;
   const userId = thunkAPI.getState().user.id;
@@ -54,7 +56,7 @@ export const clearCart = createAsyncThunk('user/clearCart', async (params, thunk
     return resp;
 });
 
-
+// Удаление товаров из корзины по категории
 export const clearPizzasFromCart = createAsyncThunk('user/clearPizzasFromCart', async (params, thunkAPI) => {
     const { name, price, category, type, size, imageUrl } = params;
     const userId = thunkAPI.getState().user.id;
@@ -71,7 +73,22 @@ export const clearPizzasFromCart = createAsyncThunk('user/clearPizzasFromCart', 
     return resp;
 });
 
-
+// Удаление товара из корзины
+export const removePizzaFromCart = createAsyncThunk('user/removePizzaFromCart', async (params, thunkAPI) => {
+  const { name, price, category, type, size, imageUrl } = params;
+  const userId = thunkAPI.getState().user.id;
+  const payload = {
+      name,
+      price,
+      category,
+      type,
+      size,
+      imageUrl,
+      userId,
+  };
+  const resp = await userAPI.removeFromCart(payload);
+  return resp;
+});
 
 const userSlice = createSlice({
   name: 'user',
@@ -113,7 +130,20 @@ const userSlice = createSlice({
     },
 
     [addPizzaToCart.fulfilled]: (state, action) => {
-        state.cart = [...state.cart.filter(el => el.id !== action.payload.id), {...action.payload}]
+        const tempCart = [...state.cart.filter(el => el.id !== action.payload.id), {...action.payload}];
+        state.cart = sortBy(tempCart, ['name', 'size', 'type']);
+    },
+
+    [removePizzaFromCart.fulfilled]: (state, action) => {
+      let tempCart;
+      if (action.payload.count == 0) {
+        tempCart = [...state.cart.filter(el => el.id !== action.payload.id)];
+      }
+      else {
+        tempCart = [...state.cart.filter(el => el.id !== action.payload.id), {...action.payload}];
+      }
+      state.cart = sortBy(tempCart, ['name', 'size', 'type']);
+
     },
 
     [clearCart.fulfilled]: (state) => {
@@ -122,7 +152,8 @@ const userSlice = createSlice({
 
     [clearPizzasFromCart.fulfilled]: (state, action) => {
         const {type, name, size} = action.payload;
-        state.cart = state.cart.filter(el => el.name !== name && el.size !== size && el.type !== type)
+        const items = state.cart.find(el => el.name === name && el.size === size && el.type === type);
+        state.cart = state.cart.filter(el => el != items);
     }
   },
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { addPizzaToCart, clearPizzasFromCart } from '../redux/slices/userSlice';
+import { addPizzaToCart, clearPizzasFromCart, removePizzaFromCart } from '../redux/slices/userSlice';
 
 function BasketItem({name, imageUrl, type, size, count, price, pizza}) {
 
@@ -11,7 +11,7 @@ function BasketItem({name, imageUrl, type, size, count, price, pizza}) {
   }
 
   const removePizza = () => {
-    // dispatch(removePizzaFromCart(pizza))
+    dispatch(removePizzaFromCart(pizza))
   }
 
   const clearPizza = () => {

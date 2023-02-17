@@ -224,10 +224,10 @@ namespace PizzaTestDB.Controllers
         }
 
         // DELETE /cart
-        // Удаление товара из корзины
+        // Удаление категории товаров из корзины
         [Route("removeItems")]
         [HttpPost]
-        public async Task<ActionResult> RemoveItemFromCart(CartItemJson item)
+        public async Task<ActionResult> RemoveItemsFromCart(CartItemJson item)
         {
             User currentUser = await _db.Users.FirstOrDefaultAsync(el => el.Id == item.userId);
 
@@ -240,6 +240,54 @@ namespace PizzaTestDB.Controllers
             await _db.SaveChangesAsync();
 
             return Ok(item);
+        }
+
+        // DELETE /cart
+        // Удаление товара из корзины
+        [Route("removeItem")]
+        [HttpPost]
+        public async Task<ActionResult> RemoveItemFromCart(CartItemJson item)
+        {
+            User currentUser = await _db.Users.FirstOrDefaultAsync(el => el.Id == item.userId);
+
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            CartItem currentItem = currentUser.CartItems.FirstOrDefault(el => el.Name == item.name && el.Size == item.size && el.Type == item.type);
+
+            CartItemJson itemJson = null;
+            if (currentItem != null)
+            {
+
+                itemJson = new CartItemJson()
+                {
+                    id = currentItem.Id,
+                    name = currentItem.Name,
+                    price = currentItem.Price,
+                    category = currentItem.Category,
+                    type = currentItem.Type,
+                    size = currentItem.Size,
+                    imageUrl = currentItem.ImageUrl,
+                    count = currentItem.Count - 1,
+                    userId = currentItem.UserId,
+                };
+
+                if (currentItem.Count > 1)
+                {
+                    currentItem.Count -= 1;
+                }
+                else
+                {
+                    currentUser.CartItems.Remove(currentItem);
+                }
+                
+                await _db.SaveChangesAsync();
+
+            }
+
+            return new JsonResult(itemJson);
         }
     }
 }

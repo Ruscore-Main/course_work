@@ -47,6 +47,10 @@ export const userAPI = {
   addToCart(item) {
     return userInstance.post('/cart', item).then(res => res.data);
   },
+  
+  removeFromCart(item) {
+    return userInstance.post('/removeItem', item).then(res => res.data);
+  },
 
   clearCart(user) {
     return userInstance.post('/clearCart', user).then(res => res.data);
