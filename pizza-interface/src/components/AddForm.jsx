@@ -106,17 +106,21 @@ class AddForm extends React.Component {
   validateState = () => {
     const { name, price, sizes, imageUrls, types } = this.getPizzaState();
     if (!name || !price || !sizes.length || !imageUrls.length || !types.length) {
-      return false;
+      return 'Не все поля заполнены!';
     }
-    return true;
+    else if (this.props.items.some(el => el.name == name)) {
+      return "Пицца с таким названием уже существует!";
+    }
+    return "Успешно!";
   };
 
   savePizza = (e) => {
     e.preventDefault();
-    if (this.validateState()) {
+    let resValidation = this.validateState();
+    if (this.validateState() == "Успешно!") {
       this.props.dispatch(addNewPizza(this.getPizzaState()));
     } else {
-      alert('НЕ ВСЕ ПОЛЯ ЗАПОЛНЕНЫ!');
+      alert(resValidation);
     }
   };
 

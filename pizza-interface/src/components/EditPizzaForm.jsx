@@ -125,26 +125,24 @@ class EditPizzaForm extends React.Component {
 
   // Валидация для unit-тестов
   validateState = () => {
-    const { id, name, price, sizes, imageUrls, types } = this.getPizzaState();
-    if (
-      !name ||
-      !price ||
-      !sizes.length ||
-      !imageUrls.length ||
-      !types.length
-    ) {
-      return false;
+    const { name, price, sizes, imageUrls, types } = this.getPizzaState();
+    if (!name || !price || !sizes.length || !imageUrls.length || !types.length) {
+      return 'Не все поля заполнены!';
     }
-    return true;
+    else if (this.props.items.some(el => el.name == name)) {
+      return "Пицца с таким названием уже существует!";
+    }
+    return "Успешно!";
   };
 
   // put запрос на обновление товара
   savePizza = (e) => {
     e.preventDefault();
-    if (this.validateState()) {
+    let resValidation = this.validateState();
+    if (this.validateState() == "Успешно!") {
       this.props.dispatch(updatePizza(this.getPizzaState()));
     } else {
-      alert("НЕ ВСЕ ПОЛЯ ЗАПОЛНЕНЫ!");
+      alert(resValidation);
     }
   };
 

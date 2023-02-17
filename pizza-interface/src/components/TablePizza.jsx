@@ -57,7 +57,7 @@ const TablePizza = ({items = [], dispatch}) => {
         </Modal.Header>
 
         <Modal.Body>
-          <EditPizzaForm pizza={curPizza} dispatch={dispatch}/>
+          <EditPizzaForm pizza={curPizza} dispatch={dispatch} items={items}/>
         </Modal.Body>
       </Modal>
     

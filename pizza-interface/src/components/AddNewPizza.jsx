@@ -4,7 +4,7 @@ import { Modal } from 'react-bootstrap';
 import AddForm from './AddForm';
 import { useDispatch } from 'react-redux';
 
-const AddNewPizza = ({dispatch}) => {
+const AddNewPizza = ({dispatch, items}) => {
   const [show, setShow] = React.useState(false);
 
   const handleClose = () => setShow(false);
@@ -26,7 +26,7 @@ const AddNewPizza = ({dispatch}) => {
         </Modal.Header>
 
         <Modal.Body>
-          <AddForm dispatch={dispatch}/>
+          <AddForm dispatch={dispatch} items={items}/>
         </Modal.Body>
       </Modal>
     </>

@@ -6,7 +6,7 @@ import { Navigate } from 'react-router-dom';
 
 const Admin = () => {
 
-  const {isAuth, role} = useAuth();
+  const {isAuth, role, login} = useAuth();
   const {items, isLoaded} = useSelector(({ pizzas }) => ({
     items: pizzas.items,
     isLoaded: pizzas.isLoaded
@@ -27,9 +27,9 @@ const Admin = () => {
 
   return (
     <div className="container">
-      <h2 className="content__title">Панель администрации</h2>
+      <h2 className="content__title">Панель администрации: {login}</h2>
       <div className="admin__wrapper">
-        <AddNewPizza dispatch={dispatch}/>
+        <AddNewPizza items={items} dispatch={dispatch}/>
         
         {
           isLoaded ?

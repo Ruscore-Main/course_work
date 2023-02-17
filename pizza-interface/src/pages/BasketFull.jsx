@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { clearCart } from '../redux/slices/userSlice';
 
 function BasketFull() {
-  const { cart } = useSelector((state) => state.user);
+  const { login, cart } = useSelector((state) => state.user);
   const [totalPrice, totalCount] = [
     cart.reduce((sum, el) => sum + el.count * el.price, 0),
     cart.reduce((sum, el) => sum + el.count, 0),
@@ -19,6 +19,7 @@ function BasketFull() {
 
   return (
     <div className="container container--cart">
+      <h2 className="content__title">Здравствуйте, {login}!</h2>
       <div className="cart">
         <div className="cart__top">
           <h2 className="content__title">
