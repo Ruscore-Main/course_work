@@ -126,8 +126,15 @@ class EditPizzaForm extends React.Component {
   // Валидация для unit-тестов
   validateState = () => {
     const { name, price, sizes, imageUrls, types } = this.getPizzaState();
+    const withEmojis = /\p{Extended_Pictographic}/u;
     if (!name || !price || !sizes.length || !imageUrls.length || !types.length) {
       return 'Не все поля заполнены!';
+    }
+    else if (withEmojis.test(name)) {
+      return "Название не должно содержать эмодзи!";
+    }
+    else if (isNaN(price)) {
+      return "Цена должна быть числом!";
     }
     else if (this.props.items.some(el => el.name == name)) {
       return "Пицца с таким названием уже существует!";

@@ -34,7 +34,7 @@ namespace PizzaTestDB
             // DB
             //services.AddTransient<MySqlConnection>(_ => new MySqlConnection(Configuration["ConnectionStrings:Default"]));
 
-            var connectionString = "server=localhost;port=3307;user=root;password=root;database=pizzadata";
+            var connectionString = "server=localhost;port=3306  ;user=root;password=root;database=pizzadata";
 
             var serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
 
@@ -55,6 +55,9 @@ namespace PizzaTestDB
                    .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             services.AddControllers();
+
+            // Swagger
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,12 +66,18 @@ namespace PizzaTestDB
 
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseDeveloperExceptionPage();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint
+            app.UseSwagger();
+            // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
+            app.UseSwaggerUI();
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers(); // ïîäêëþ÷àåì ìàðøðóòèçàöèþ íà êîíòðîëëåðû
+                endpoints.MapControllers();
             });
         }
     }

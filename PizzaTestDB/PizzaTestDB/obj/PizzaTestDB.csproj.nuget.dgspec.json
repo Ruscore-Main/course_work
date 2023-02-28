@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\PROGRAMMING\\CourseWork\\PizzaTestDB\\PizzaTestDB\\PizzaTestDB.csproj": {}
+    "C:\\Programming\\course_work\\PizzaTestDB\\PizzaTestDB\\PizzaTestDB.csproj": {}
   },
   "projects": {
-    "D:\\PROGRAMMING\\CourseWork\\PizzaTestDB\\PizzaTestDB\\PizzaTestDB.csproj": {
+    "C:\\Programming\\course_work\\PizzaTestDB\\PizzaTestDB\\PizzaTestDB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\PROGRAMMING\\CourseWork\\PizzaTestDB\\PizzaTestDB\\PizzaTestDB.csproj",
+        "projectUniqueName": "C:\\Programming\\course_work\\PizzaTestDB\\PizzaTestDB\\PizzaTestDB.csproj",
         "projectName": "PizzaTestDB",
-        "projectPath": "D:\\PROGRAMMING\\CourseWork\\PizzaTestDB\\PizzaTestDB\\PizzaTestDB.csproj",
-        "packagesPath": "C:\\Users\\Ruslan\\.nuget\\packages\\",
-        "outputPath": "D:\\PROGRAMMING\\CourseWork\\PizzaTestDB\\PizzaTestDB\\obj\\",
+        "projectPath": "C:\\Programming\\course_work\\PizzaTestDB\\PizzaTestDB\\PizzaTestDB.csproj",
+        "packagesPath": "C:\\Users\\oobit\\.nuget\\packages\\",
+        "outputPath": "C:\\Programming\\course_work\\PizzaTestDB\\PizzaTestDB\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Ruslan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\oobit\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -62,6 +62,10 @@
               "target": "Package",
               "version": "[5.0.0-alpha.2, )"
             },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            },
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.5, )"
@@ -89,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
